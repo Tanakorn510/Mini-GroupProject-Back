@@ -43,10 +43,45 @@ app.post('/login', (req, res) => {
 
 // expense routes
 //======= Route fisrt =======
+// 1. All expenses
+app.get('/all_expenses/:user_id', (req, res) => {
+    const user_id = req.params.user_id;
+    const sql = "SELECT item, paid, date FROM expense WHERE user_id = ?";
+    con.query(sql, [user_id], function(err, results) {
+        if (err) {
+            return res.status(500).send("Database server error");
+        }
+        res.json(results);
+    });
+});
 
 //======= Route second =======
+// 2. Today's expense
+app.get('/today_expenses/:user_id', (req, res) => {
+    const user_id = req.params.user_id;
+    const sql = "SELECT item, paid, date FROM expense WHERE user_id = ? AND DATE(date) = CURDATE()";
+    con.query(sql, [user_id], function(err, results) {
+        if (err) {
+            return res.status(500).send("Database server error");
+        }
+        res.json(results);
+    });
+});
+
 
 //======= Route third ========
+// 3. Search expense
+app.get('/search_expense/:user_id/:item', (req, res) => {
+    const user_id = req.params.user_id;
+    const item = req.params.item;
+    const sql = "SELECT item, paid, date FROM expense WHERE user_id = ? AND item LIKE ?";
+    con.query(sql, [user_id, `%${item}%`], function(err, results) {
+        if (err) {
+            return res.status(500).send("Database server error");
+        }
+        res.json(results);
+    });
+});
 
 //======= Route fourth =======
 

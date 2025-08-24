@@ -1,0 +1,26 @@
+{
+  "name": "mini-groupproject-back-1",
+  "version": "1.0.0",
+  "description": "ติดตั้ง Package\r npm init -y\r npm install express\r npm install mysql2\r npm install bcrypt",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tanakorn510/Mini-GroupProject-Back.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tanakorn510/Mini-GroupProject-Back/issues"
+  },
+  "homepage": "https://github.com/Tanakorn510/Mini-GroupProject-Back#readme",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.3"
+  }
+}
