@@ -49,8 +49,8 @@ app.post('/login', (req, res) => {
 // expense routes
 //======= Route fisrt =======
 // show all expense by user id
-app.get('/user/:id', (req, res) => {
-    const userId = req.params.id;
+app.get('/show_expense/:user_id', (req, res) => {
+    const userId = req.params.user_id;
     const sql = "SELECT* FROM expense WHERE user_id = ?";
     con.query(sql, [userId], function(err, results) {
         if(err) {
@@ -81,7 +81,7 @@ app.get('/expenses/search/:user_id/:item', (req, res) => {
 
 //======= Route fourth =======
 // 4. Add new expense
-app.post('/expenses', (req, res) => {
+app.post('/add_expenses', (req, res) => {
     const {
         user_id,
         item,
@@ -97,17 +97,27 @@ app.post('/expenses', (req, res) => {
 });
 //======= Route fifth =======
 // 5. Delete an expense
-app.delete('/expenses/:id', (req, res) => {
-    const id = req.params.id;
-    const sql = "DELETE FROM expense WHERE id = ?";
-    con.query(sql, [id], function(err, result) {
+app.delete('/delete_expenses/:user_id', (req, res) => {
+    const user_id = req.params.user_id;
+    const id = req.body.id; 
+
+    // ตรวจสอบว่า expense นี้เป็นของ user นี้หรือไม่
+    const checkSql = "SELECT * FROM expense WHERE id = ? AND user_id = ?";
+    con.query(checkSql, [id, user_id], function(err, results) {
         if (err) {
             return res.status(500).send("Database server error");
         }
-        if (result.affectedRows === 0) {
-            return res.status(404).send("Expense not found");
+        if (results.length === 0) {
+            return res.status(403).send("No permission to delete this expense");
         }
-        res.send("Delete expense success");
+        // ถ้าใช่ ให้ลบ
+        const deleteSql = "DELETE FROM expense WHERE id = ?";
+        con.query(deleteSql, [id], function(err, result) {
+            if (err) {
+                return res.status(500).send("Database server error");
+            }
+            res.send("Delete expense success");
+        });
     });
 });
 
