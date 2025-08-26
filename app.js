@@ -63,13 +63,13 @@ app.get('/show_expense/:user_id', (req, res) => {
     });
 });
 
-//======= Route second =======
+
 
 //======= Route third ========
 // 3. Search expense
-app.get('/expenses/search/:user_id/:item', (req, res) => {
+app.get('/expenses/search/:user_id', (req, res) => {
     const user_id = req.params.user_id;
-    const item = req.params.item;
+    const item = req.body.item;
     const sql = "SELECT item, paid, date FROM expense WHERE user_id = ? AND item LIKE ?";
     con.query(sql, [user_id, `%${item}%`], function(err, results) {
         if (err) {
@@ -79,6 +79,7 @@ app.get('/expenses/search/:user_id/:item', (req, res) => {
     });
 });
 
+//=================================================================================
 //======= Route fourth =======
 // 4. Add new expense
 app.post('/add_expenses/:user_id', (req, res) => {
