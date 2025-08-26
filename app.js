@@ -81,9 +81,9 @@ app.get('/expenses/search/:user_id/:item', (req, res) => {
 
 //======= Route fourth =======
 // 4. Add new expense
-app.post('/add_expenses', (req, res) => {
+app.post('/add_expenses/:user_id', (req, res) => {
+    const user_id = req.params.user_id;
     const {
-        user_id,
         item,
         paid
     } = req.body;
